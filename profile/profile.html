@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="vue.min.js"></script>
+	<script type="text/javascript" src="vue-router.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			width: 100%;
+			height: 100%;
+		}
+		.fl{
+			float: left;
+		}
+		.box{
+			width: 100%;
+			height: 762px;
+			background: url(img/mario-bg.png) no-repeat;
+			background-size: 100% 100%;
+			position: relative;
+		}
+		.box>.DC{
+			width: 100px;
+			height: 400px;
+			margin-top: 282px;
+			margin-left: 1%;
+			position: relative;
+		}
+		.DC:nth-child(1){
+			
+		}
+		.DC:nth-child(2){
+			
+		}
+		.DC:nth-child(3){
+			
+		}
+		.DC:nth-child(4){
+			
+		}
+		.inner_box{
+			width: 100px;
+			height: 100px;
+			background-color: #e25911;
+			background-image: url(img/block.png);
+			background-size: 100% 100%;
+			cursor: pointer;
+			transition: .25s;
+			text-align: center;
+			position: relative;
+			z-index: 99;
+		}
+		.mushroom{
+			width: 100px;
+			height: 100px;
+			background: url(img/mushroom.png) no-repeat;
+			background-size: 100% 100%;
+			transition: 1s;
+			position: absolute;
+			top: 0;
+		}
+		.mario{
+			opacity: 0;
+			width: 100px;
+			height: 150px;
+			background: url(img/stand-right.png) no-repeat bottom;
+			background-size: 100%;
+			transform: translateY(102px);
+			-webkit-transform: translateY(102px);
+			-moz-transform: translateY(102px);
+			position: relative;
+		}
+		.firstMario{
+			opacity: 1;
+		}
+		.enemy{
+			width: 64px;
+			height: 64px;
+			background: url(img/enemy.gif);
+			position: absolute;
+			top: 570px;
+			left: 50%;
+			animation: enemyMove 2.5s linear infinite;
+		}
+		@keyframes enemyMove{
+			0% {
+				transform: translateX(0);
+				-webkit-transform: translateX(0);
+				-moz-transform: translateX(0);
+			}
+			50% {
+				transform: translateX(-100px);
+				-webkit-transform: translateX(-100px);
+				-moz-transform: translateX(-100px);
+			}
+			100% {
+				transform: translateX(0);
+				-webkit-transform: translateX(0);
+				-moz-transform: translateX(0);
+			}
+		}
+		@keyframes jump{
+			0% {
+				transform: translateY(102px);
+				-webkit-transform: translateY(102px);
+				-moz-transform: translateY(102px);
+			}
+			50% {
+				transform: translateY(-7px);
+				-webkit-transform: translateY(-7px);
+				-moz-transform: translateY(-7px);
+			}
+			100% {
+				transform: translateY(102px);
+				-webkit-transform: translateY(102px);
+				-moz-transform: translateY(102px);
+			}
+		}
+		@keyframes hit{
+			0% {
+				transform: translateY(0);
+				-webkit-transform: translateY(0);
+				-moz-transform: translateY(0);
+			}
+			50% {
+				transform: translateY(-10px);
+				-webkit-transform: translateY(-10px);
+				-moz-transform: translateY(-10px);
+			}
+			100% {
+				transform: translateY(0);
+				-webkit-transform: translateY(0);
+				-moz-transform: translateY(0);
+			}
+		}
+		.animation-transition {
+		  transition: all .3s ease;
+		  height: 30px;
+		  padding: 10px;
+		  overflow: hidden;
+		}
+		.animation-enter, .animation-leave {
+		  height: 0;
+		  padding: 0 10px;
+		  opacity: 0;
+		}
+		
+	</style>
+</head>
+<body>
+<div id="app">
+	<audio id="BGM" loop="loop">
+		<source src="audio/BGM.mp3" type="audio/mpeg">
+		你的浏览器不支持
+	</audio>
+	<audio id="jump">
+		<source src="audio/jump.mp3" type="audio/mpeg">
+		你的浏览器不支持
+	</audio>
+	<audio id="mushroomout">
+		<source src="audio/mushroomout.mp3" type="audio/mpeg">
+		你的浏览器不支持
+	</audio>
+	<audio id="hit">
+		<source src="audio/hit.mp3" type="audio/mpeg">
+		你的浏览器不支持
+	</audio>
+	<div class="box">
+		<div class="DC fl">
+			<div class="inner_box" v-link="{path:'/a'}"></div>
+			<div class="mushroom"></div>
+			<div class="mario firstMario"></div>
+		</div>
+		<div class="DC fl">
+			<div class="inner_box" v-link="{path:'/b'}"></div>
+			<div class="mushroom"></div>
+			<div class="mario"></div>
+		</div>
+		<div class="DC fl">
+			<div class="inner_box" v-link="{path:'/c'}"></div>
+			<div class="mushroom"></div>
+			<div class="mario"></div>
+		</div>
+		<div class="DC fl">
+			<div class="inner_box" v-link="{path:'/d'}"></div>
+			<div class="mushroom"></div>
+			<div class="mario"></div>
+		</div>
+		<div class="enemy"></div>
+		<router-view transition="animation" transition-mode="out-in"></router-view>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+/*预设变量*/
+var $inner_box = $(".inner_box"),
+	$mario = $(".mario"),
+	DOM_audio_BGM = document.querySelector("#BGM"),
+	DOM_audio_jump = document.querySelector("#jump"),
+	DOM_audio_mushroomout = document.querySelector("#mushroomout"),
+	DOM_audio_hit = document.querySelector("#hit");
+var banned = 0;//禁止重复快速点击的开关变量
+/*动画及音频效果实现*/
+$inner_box.hover(function(){
+	$inner_box.siblings(".mario").css({"opacity":"0"});
+	$(this).siblings(".mario").css({"transition":"0.5s","opacity":"1"});
+},function(){
+	$(this).siblings(".mushroom").css({"top":"0"});
+	if(getBlockState($(this)) != -1){
+		$(this).css({"backgroundImage":"url(img/block.png)"});
+	}
+});
+$inner_box.on("click",function(){
+	var $that = $(this);
+	//点击播放动画
+	animation($that);
+	//点击播放音效
+	playAudio($that);
+});
+//音效函数
+function playAudio($this){
+	if(getBlockState($this) != -1){
+		DOM_audio_hit.play();
+	}else{
+		DOM_audio_jump.play();
+		DOM_audio_mushroomout.play();
+	}
+}
+//查看块的状态函数
+function getBlockState($this){
+	var str = $this.css("backgroundImage");
+	str = str.lastIndexOf("block-hited");
+	return str;
+}
+//导航动画函数
+function animation($dom){
+	if(banned == 0){
+		banned++;
+		$dom.siblings(".mario").css({"transition":"0s","background":"url(img/jump-right.png) no-repeat","background-size":"100%"});
+		$dom.siblings(".mario").css({"animation":"jump 0.25s"});
+		$dom.css({"backgroundImage":"url(img/block-hited.png)"});
+		setTimeout(function(){
+			$dom.siblings(".mario").css({"animation":"","background":"url(img/stand-right.png) no-repeat bottom","background-size":"100%"});
+			banned = 0;
+		},250);
+		if(getBlockState($dom) == -1){
+			$dom.css({"animation":"hit 0.5s"});
+		}
+		$dom.siblings(".mushroom").css({"top":"-100px"},500);
+		setTimeout(function(){
+			$dom.css({"animation":""});
+		},500);
+	}
+}
+
+
+/*路由*/
+var a = {
+	template:`<div class="fl">个人信息</div>`
+}
+var b = {
+	template:`<div class="fl">b</div>`
+}
+var c = {
+	template:`<div class="fl">c</div>`
+}
+var d = {
+	template:`<div class="fl">d</div>`
+}
+var app = Vue.extend({});
+var router = new VueRouter({});
+router.map({
+	'/a':{
+		component:a
+	},
+	'/b':{
+		component:b
+	},
+	'/c':{
+		component:c
+	},
+	'/d':{
+		component:d
+	}
+});
+router.start(app,"#app");
+</script>
+</html>
