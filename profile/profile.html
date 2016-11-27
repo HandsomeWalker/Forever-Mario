@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Document</title>
+	<title>Forever Mario</title>
+	<link rel='icon' href='img/favicon.ico' type='image/x-ico' />
 	<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="vue.min.js"></script>
 	<script type="text/javascript" src="vue-router.js"></script>
@@ -88,6 +89,40 @@
 			left: 50%;
 			animation: enemyMove 2.5s linear infinite;
 		}
+		.flowerbox{
+			width: 60px;
+			height: 75px;
+			overflow: hidden;
+			position: absolute;
+			top: 431px;
+			left: 67.5%;
+		}
+		.flower{
+			width: 60px;
+			height: 75px;
+			background: url(img/flower.gif);
+			transform: translateY(75px);
+			-webkit-transform: translateY(75px);
+			-moz-transform: translateY(75px);
+			animation: flowerMove 5s infinite;
+		}
+		@keyframes flowerMove{
+			0% {
+				transform: translateY(75px);
+				-webkit-transform: translateY(75px);
+				-moz-transform: translateY(75px);
+			}
+			50% {
+				transform: translateY(0);
+				-webkit-transform: translateY(0);
+				-moz-transform: translateY(0);
+			}
+			100% {
+				transform: translateY(75px);
+				-webkit-transform: translateY(75px);
+				-moz-transform: translateY(75px);
+			}
+		}
 		@keyframes enemyMove{
 			0% {
 				transform: translateX(0);
@@ -155,7 +190,7 @@
 </head>
 <body>
 <div id="app">
-	<audio id="BGM" loop="loop">
+	<audio id="BGM" loop="loop" autoplay="autoplay">
 		<source src="audio/BGM.mp3" type="audio/mpeg">
 		你的浏览器不支持
 	</audio>
@@ -193,6 +228,9 @@
 			<div class="mario"></div>
 		</div>
 		<div class="enemy"></div>
+		<div class="flowerbox">
+			<div class="flower"></div>
+		</div>
 		<router-view transition="animation" transition-mode="out-in"></router-view>
 	</div>
 </div>
