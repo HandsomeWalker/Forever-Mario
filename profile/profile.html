@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Forever Mario</title>
+	<meta name="keywords" content="DreamCreative" />
+	<title>Forever Mario--DC</title>
 	<link rel='icon' href='img/favicon.ico' type='image/x-ico' />
 	<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="vue.min.js"></script>
@@ -33,6 +34,7 @@
 			margin-left: 1%;
 			position: relative;
 		}
+		/*可调问号块的位置*/
 		.DC:nth-child(1){
 			
 		}
@@ -90,14 +92,14 @@
 			animation: enemyMove 2.5s linear infinite;
 		}
 		.flowerbox{
-			width: 60px;
-			height: 75px;
-			overflow: hidden;
+			width: 96px;
+			height: 203px;
 			position: absolute;
 			top: 431px;
-			left: 67.5%;
+			left: 64%;
 		}
 		.flower{
+			margin: 0 auto;
 			width: 60px;
 			height: 75px;
 			background: url(img/flower.gif);
@@ -105,6 +107,14 @@
 			-webkit-transform: translateY(75px);
 			-moz-transform: translateY(75px);
 			animation: flowerMove 5s infinite;
+			position: relative;
+		}
+		.pipe{
+			width: 96px;
+			height: 128px;
+			background: url(img/pipe.png);
+			position: relative;
+			z-index: 99;
 		}
 		@keyframes flowerMove{
 			0% {
@@ -174,18 +184,38 @@
 				-moz-transform: translateY(0);
 			}
 		}
+		/*填充内容*/
+		.a,.b,.c,.d{
+			font-family: "Microsoft YaHei";
+			font-size: 50px;
+			font-weight: bolder;
+		}
 		.animation-transition {
 		  transition: all .3s ease;
-		  height: 30px;
+		  background-color: white;
+		  width: 800px;
+		  height: 614px;
+		  border-radius: 10px;
+		  opacity: .5;
 		  padding: 10px;
 		  overflow: hidden;
+		  position: relative;
+		  z-index: 999;
+		  text-align: center;
+		  line-height: 614px;
 		}
 		.animation-enter, .animation-leave {
+		  width: 0;
 		  height: 0;
 		  padding: 0 10px;
 		  opacity: 0;
 		}
-		
+		/*媒体查询*/
+		@media screen and (max-width: 1271px) {
+			.animation-transition{
+				width: 400px;
+			}
+		}
 	</style>
 </head>
 <body>
@@ -230,6 +260,7 @@
 		<div class="enemy"></div>
 		<div class="flowerbox">
 			<div class="flower"></div>
+			<div class="pipe"></div>
 		</div>
 		<router-view transition="animation" transition-mode="out-in"></router-view>
 	</div>
@@ -300,16 +331,16 @@ function animation($dom){
 
 /*路由*/
 var a = {
-	template:`<div class="fl">个人信息</div>`
+	template:`<div class="a fl">填充内容1</div>`
 }
 var b = {
-	template:`<div class="fl">b</div>`
+	template:`<div class="b fl">填充内容2</div>`
 }
 var c = {
-	template:`<div class="fl">c</div>`
+	template:`<div class="c fl">填充内容3</div>`
 }
 var d = {
-	template:`<div class="fl">d</div>`
+	template:`<div class="d fl">填充内容4</div>`
 }
 var app = Vue.extend({});
 var router = new VueRouter({});
