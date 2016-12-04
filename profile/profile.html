@@ -116,6 +116,16 @@
 			position: relative;
 			z-index: 99;
 		}
+		.tips{
+			color: white;
+			font-family: "Microsoft YaHei";
+			position: absolute;
+			left: 0;
+			top: 226px;
+		}
+		.hidden{
+			display: none;
+		}
 		@keyframes flowerMove{
 			0% {
 				transform: translateY(75px);
@@ -187,22 +197,23 @@
 		/*填充内容*/
 		.a,.b,.c,.d{
 			font-family: "Microsoft YaHei";
-			font-size: 50px;
 			font-weight: bolder;
+		}
+		.d{
+			line-height: 614px;
 		}
 		.animation-transition {
 		  transition: all .3s ease;
-		  background-color: white;
+		  background: rgba(255,255,255,0.5);
 		  width: 800px;
 		  height: 614px;
 		  border-radius: 10px;
-		  opacity: .5;
 		  padding: 10px;
 		  overflow: hidden;
 		  position: relative;
 		  z-index: 999;
 		  text-align: center;
-		  line-height: 614px;
+		  font-size: 30px;
 		}
 		.animation-enter, .animation-leave {
 		  width: 0;
@@ -210,9 +221,16 @@
 		  padding: 0 10px;
 		  opacity: 0;
 		}
+		video{
+				width: 600px;
+			}
 		/*媒体查询*/
 		@media screen and (max-width: 1271px) {
 			.animation-transition{
+				width: 400px;
+				font-size: 20px;
+			}
+			video{
 				width: 400px;
 			}
 		}
@@ -222,19 +240,19 @@
 <div id="app">
 	<audio id="BGM" loop="loop" autoplay="autoplay">
 		<source src="audio/BGM.mp3" type="audio/mpeg">
-		你的浏览器不支持
+		你的浏览器不支持，请使用谷歌浏览器
 	</audio>
 	<audio id="jump">
 		<source src="audio/jump.mp3" type="audio/mpeg">
-		你的浏览器不支持
+		你的浏览器不支持，请使用谷歌浏览器
 	</audio>
 	<audio id="mushroomout">
 		<source src="audio/mushroomout.mp3" type="audio/mpeg">
-		你的浏览器不支持
+		你的浏览器不支持，请使用谷歌浏览器
 	</audio>
 	<audio id="hit">
 		<source src="audio/hit.mp3" type="audio/mpeg">
-		你的浏览器不支持
+		你的浏览器不支持，请使用谷歌浏览器
 	</audio>
 	<div class="box">
 		<div class="DC fl">
@@ -257,6 +275,7 @@
 			<div class="mushroom"></div>
 			<div class="mario"></div>
 		</div>
+		<h2 class="tips">↓↓↓请点击问号方块↓↓↓</h2>
 		<div class="enemy"></div>
 		<div class="flowerbox">
 			<div class="flower"></div>
@@ -270,6 +289,8 @@
 /*预设变量*/
 var $inner_box = $(".inner_box"),
 	$mario = $(".mario"),
+	$tips = $(".tips"),
+	DOM_videos,
 	DOM_audio_BGM = document.querySelector("#BGM"),
 	DOM_audio_jump = document.querySelector("#jump"),
 	DOM_audio_mushroomout = document.querySelector("#mushroomout"),
@@ -287,10 +308,24 @@ $inner_box.hover(function(){
 });
 $inner_box.on("click",function(){
 	var $that = $(this);
+	$tips.addClass("hidden");
 	//点击播放动画
 	animation($that);
 	//点击播放音效
 	playAudio($that);
+	//播放视频相关
+	setTimeout(function(){
+		DOM_videos = document.getElementsByTagName("video");
+		console.log(DOM_videos);
+		DOM_videos[0].onplaying = function(){
+			console.log("playing");
+			DOM_audio_BGM.pause();
+		}
+		DOM_videos[0].onpause = function(){
+			console.log("pause");
+			DOM_audio_BGM.play();
+		}
+	},500);
 });
 //音效函数
 function playAudio($this){
@@ -331,16 +366,38 @@ function animation($dom){
 
 /*路由*/
 var a = {
-	template:`<div class="a fl">填充内容1</div>`
+	template:
+	`<div class="a fl">
+		<video controls="controls">
+			<source src="video/fade.mp4" type="video/mp4">
+			你的浏览器不支持，请使用谷歌浏览器
+		</video>
+		<p>我爱鬼畜，这是我制作的鬼畜调音小作品</p>
+		<p>B站播放量2.2万</p>
+	</div>`
 }
 var b = {
-	template:`<div class="b fl">填充内容2</div>`
+	template:`<div class="b fl">
+		<video controls="controls">
+			<source src="video/Fight.mp4" type="video/mp4">
+			你的浏览器不支持，请使用谷歌浏览器
+		</video>
+		<p>吉他技能GET√</p>
+	</div>`
 }
 var c = {
-	template:`<div class="c fl">填充内容3</div>`
+	template:`<div class="c fl">
+		<video controls="controls">
+			<source src="video/star.mp4" type="video/mp4">
+			你的浏览器不支持，请使用谷歌浏览器
+		</video>
+		<p>这是我利用cocos creator开发的H5小游戏</p>
+	</div>`
 }
 var d = {
-	template:`<div class="d fl">填充内容4</div>`
+	template:`<div class="d fl">
+		感谢观看
+	</div>`
 }
 var app = Vue.extend({});
 var router = new VueRouter({});
